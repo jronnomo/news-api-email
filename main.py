@@ -1,13 +1,13 @@
 import os
-
 import requests
 from send_email import send_email
 from dotenv import load_dotenv
 
 load_dotenv()
 api = os.getenv("API")
-url = f"https://newsapi.org/v2/everything?q=tesla& \
-sortBy=publishedAt&apiKey={api}"
+topic = "crypto"
+url = f"https://newsapi.org/v2/everything?q={topic}& \
+sortBy=publishedAt&apiKey={api}&language=en"
 
 request = requests.get(url)
 content = request.json()
@@ -23,10 +23,12 @@ Here are your list of news summaries:
 article_content = []
 str_article_content = ""
 
-for article in articles:
+for article in articles[:10]:
     title = article["title"]
+    url = article["url"]
     description = article["description"]
     article_content.append(f"Title: {title}")
+    article_content.append(f"Open full story here: {url}")
     article_content.append(f"Bite: {description}")
     article_content.append('\n')
 
